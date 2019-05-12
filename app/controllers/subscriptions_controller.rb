@@ -41,6 +41,7 @@ class SubscriptionsController < ApplicationController
 
   # DELETE /subscriptions/1
   def destroy
+    @all_invoice_children = Invoice.where( :subscription_id => params[:id]).destroy_all
     @subscription.destroy
   end
 
