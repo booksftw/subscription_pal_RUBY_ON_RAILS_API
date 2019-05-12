@@ -15,12 +15,6 @@ class SubscriptionsController < ApplicationController
   # POST /subscriptions
   def create
     @subscription = Subscription.new(subscription_params)
-
-    # puts "ONE BELOW"
-    # puts params[:invoiceData]
-    # puts "@@@"
-    # puts params[:newSubscription]
-    
     if @subscription.save
       @invoice = make_invoice(@subscription.id)
       
