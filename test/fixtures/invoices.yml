@@ -1,0 +1,7 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  PaymentDate: 2019-05-11
+
+two:
+  PaymentDate: 2019-05-11

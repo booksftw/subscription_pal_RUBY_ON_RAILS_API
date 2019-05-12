@@ -5,3 +5,9 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+Invoice.create([
+    {PaymentDate: 1992-11-10, subscription_id: 1} , 
+    { PaymentDate: Time.now, subscription_id: 2} , 
+    {PaymentDate: Time.local(1992,"nov",26), subscription_id: 1}
+])

@@ -16,10 +16,22 @@ class SubscriptionsController < ApplicationController
   def create
     @subscription = Subscription.new(subscription_params)
 
+    # puts "ONE BELOW"
+    # puts params[:invoiceData]
+    # puts "@@@"
+    # puts params[:newSubscription]
+    
     if @subscription.save
-      render json: @subscription, status: :created, location: @subscription
+      @invoice = make_invoice(@subscription.id)
+      
+      if @invoice.save
+        render json: @subscription, status: :created, location: @subscription
+      else
+        puts "invoice error"
+        render json: @invoice, status: :unprocessable_entity
+      end
     else
-      puts "error"
+      puts "subscription error"
       render json: @subscription.errors, status: :unprocessable_entity
     end
   end
@@ -46,10 +58,25 @@ class SubscriptionsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def subscription_params
-      # params.fetch(:subscription, {}).permit(:name)
-    myHash = {}
-    myHash["name"] = params[:name]
-    myHash["amount"] = params[:amount]
-    return myHash
+        # params.fetch(:subscription, {}).permit(:name)
+      myHash = {}
+      myHash["name"] = params[:newSubscription][:name]
+      myHash["amount"] = params[:newSubscription][:amount]
+      return myHash
+    end
+
+    def make_invoice(subscriptionId)
+      puts "MAKING INVOICE"
+      # puts subscriptionId
+      myHash = {}
+      paymentDateHash = params[:invoiceData][:paymentDate]
+      day = paymentDateHash[:day]
+      month = paymentDateHash[:month]
+      year = paymentDateHash[:year]
+      myHash[:PaymentDate] = Time.local(year, month, day)
+      puts myHash[:PaymentDate]
+      myHash[:subscription_id] = subscriptionId
+      myHash
+      @invoice = Invoice.new( myHash )
     end
 end
